@@ -56,13 +56,15 @@ bool sendDataArduino() {
     jsonBuffer.clear();
     return true;
   }
+  jsonBuffer.clear();
   Serial.println(action);
+  Serial.println(timer);
+  delay(1);
   Wire.beginTransmission(SLAVE_ADDRESS);
-  Wire.write((byte)0);
+  Wire.write(0);
   Wire.write((byte)action);
   Wire.write((byte)timer);
   Wire.endTransmission();
-  jsonBuffer.clear();
   return false;
 }
 
@@ -76,9 +78,9 @@ void readDataFromArduino() {
   while(Wire.available()) {
     byte c = Wire.read();
     data[index++] = (uint16_t)c;
-    Serial.println(c);
+    // Serial.println(c);
   }
-  Serial.println();
+  // Serial.println();
   data[6] %= 2;
   data[7] %= 2;
   sprintf(buf, body,
